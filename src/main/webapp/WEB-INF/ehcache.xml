@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <defaultCache eternal="false" maxElementsInMemory="1000"
+                  maxElementsOnDisk="10000" overflowToDisk="false" diskPersistent="false"
+                  timeToLiveSeconds="300" />
+
+    <cache name="allUserGroups" maxElementsInMemory="50" eternal="false"
+           overflowToDisk="false" timeToLiveSeconds="3600" timeToIdleSeconds="3600" />
+    <cache name="usersByGroup" maxElementsInMemory="50" eternal="false"
+           overflowToDisk="false" timeToLiveSeconds="3600" timeToIdleSeconds="3600" />
+
+</ehcache>

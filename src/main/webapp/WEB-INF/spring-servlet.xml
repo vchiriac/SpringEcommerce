@@ -9,10 +9,12 @@
 
     <context:component-scan base-package="org.ecommerce"/>
 
+<!--
 
     <bean name="indexController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
         <property name="viewName" value="index"/>
     </bean>
+-->
 
 
 </beans>
