@@ -1,8 +1,10 @@
 package org.ecommerce.model;
 
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,27 +22,36 @@ public class User implements Serializable {
     private String ssoId;
 
     @NotEmpty
+    @Size(min = 4)
     @Column(name = "PASSWORD", nullable = false)
     private String password;
+
+    private String passwordResetToken;
 
     @NotEmpty
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
-
     @NotEmpty
     @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
-
     @NotEmpty
+    @Email(message = "{errors.invalid_email}")
     @Column(name = "EMAIL", nullable = false)
     private String email;
-
     @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "APP_USER_USER_PROFILE",
             joinColumns = {@JoinColumn(name = "USER_ID")},
             inverseJoinColumns = {@JoinColumn(name = "USER_PROFILE_ID")})
     private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
+
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(String passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
 
     public Integer getId() {
         return id;

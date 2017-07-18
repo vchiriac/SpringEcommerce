@@ -2,6 +2,7 @@ package org.ecommerce.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "USER_PROFILE")
@@ -13,6 +14,23 @@ public class UserProfile implements Serializable {
 
     @Column(name = "TYPE", length = 15, unique = true, nullable = false)
     private String type = UserProfileType.USER.getUserProfileType();
+
+
+    public List<Permission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<Permission> permissions) {
+        this.permissions = permissions;
+    }
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_profile_permission",
+            joinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "PERM_ID", referencedColumnName = "ID")})
+    private List<Permission> permissions;
+
 
     public Integer getId() {
         return id;
