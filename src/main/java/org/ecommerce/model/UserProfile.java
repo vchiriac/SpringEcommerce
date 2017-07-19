@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "USER_PROFILE")
+@Table(name = "profiles")
 public class UserProfile implements Serializable {
 
     @Id
@@ -15,6 +15,26 @@ public class UserProfile implements Serializable {
     @Column(name = "TYPE", length = 15, unique = true, nullable = false)
     private String type = UserProfileType.USER.getUserProfileType();
 
+    @Column(length = 1024)
+    private String description;
+
+    @ManyToMany(mappedBy = "profiles")
+    private List<User> users;
+
+    @ManyToMany
+    @JoinTable(
+            name = "profile_permission",
+            joinColumns = {@JoinColumn(name = "PROFILE_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "PERM_ID", referencedColumnName = "ID")})
+    private List<Permission> permissions;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<Permission> getPermissions() {
         return permissions;
@@ -24,13 +44,13 @@ public class UserProfile implements Serializable {
         this.permissions = permissions;
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_profile_permission",
-            joinColumns = {@JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "PERM_ID", referencedColumnName = "ID")})
-    private List<Permission> permissions;
+    public List<User> getUsers() {
+        return users;
+    }
 
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public Integer getId() {
         return id;

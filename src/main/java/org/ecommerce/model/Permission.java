@@ -14,7 +14,7 @@ public class Permission {
     @Column(length = 1024)
     private String description;
     @ManyToMany(mappedBy = "permissions")
-    private List<Role> roles;
+    private List<UserProfile> profiles;
 
     public Integer getId() {
         return id;
@@ -40,12 +40,12 @@ public class Permission {
         this.description = description;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<UserProfile> getProfiles() {
+        return profiles;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setProfiles(List<UserProfile> profiles) {
+        this.profiles = profiles;
     }
 
 

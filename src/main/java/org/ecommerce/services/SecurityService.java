@@ -21,7 +21,7 @@ public class SecurityService {
     @Autowired
     PermissionRepository permissionRepository;
     @Autowired
-    RoleRepository roleRepository;
+    ProfileRepository profileRepository;
 
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -65,11 +65,11 @@ public class SecurityService {
     }*/
 
 /*    public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+        return profileRepository.findAll();
     }*/
 
     public UserProfile getRoleByType(String roleName) {
-        return roleRepository.findByType(roleName);
+        return profileRepository.findByType(roleName);
     }
 
     public UserProfile createRole(UserProfile userProfile) {
@@ -88,7 +88,7 @@ public class SecurityService {
         }
 
         userProfile.setPermissions(persistedPermissions);
-        return roleRepository.save(userProfile);
+        return profileRepository.save(userProfile);
     }
 
 /*    public Role updateRole(Role userProfile) {
@@ -107,11 +107,11 @@ public class SecurityService {
             }
         }
         persistedRole.setPermissions(updatedPermissions);
-        return roleRepository.save(persistedRole);
+        return profileRepository.save(persistedRole);
     }*/
 
 /*    public Role getRoleById(Integer id) {
-        return roleRepository.findOne(id);
+        return profileRepository.findOne(id);
     }*/
 
     public User getUserById(Integer id) {
@@ -128,15 +128,15 @@ public class SecurityService {
             throw new WebException("Email " + user.getEmail() + " already in use");
         }
         Set<UserProfile> persistedProfiles = new HashSet<>();
-        Set<UserProfile> userProfiles = user.getUserProfiles();
+        Set<UserProfile> userProfiles = user.getProfiles();
         if (userProfiles != null) {
             for (UserProfile userProfile : userProfiles) {
                 if (userProfile.getId() != null) {
-                    persistedProfiles.add(roleRepository.findOne(userProfile.getId()));
+                    persistedProfiles.add(profileRepository.findOne(userProfile.getId()));
                 }
             }
         }
-        user.setUserProfiles(persistedProfiles);
+        user.setProfiles(persistedProfiles);
 
         return userRepository.save(user);
     }
@@ -148,15 +148,15 @@ public class SecurityService {
         }
 
         Set<UserProfile> updatedProfiles = new HashSet<>();
-        Set<UserProfile> userProfiles = user.getUserProfiles();
+        Set<UserProfile> userProfiles = user.getProfiles();
         if (userProfiles != null) {
             for (UserProfile profile : userProfiles) {
                 if (profile.getId() != null) {
-                    updatedProfiles.add(roleRepository.findOne(profile.getId()));
+                    updatedProfiles.add(profileRepository.findOne(profile.getId()));
                 }
             }
         }
-        persistedUser.setUserProfiles(updatedProfiles);
+        persistedUser.setProfiles(updatedProfiles);
         return userRepository.save(persistedUser);
     }
 

@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "APP_USER")
+@Table(name = "users")
 public class User implements Serializable {
 
     @Id
@@ -31,19 +31,23 @@ public class User implements Serializable {
     @NotEmpty
     @Column(name = "FIRST_NAME", nullable = false)
     private String firstName;
+
     @NotEmpty
     @Column(name = "LAST_NAME", nullable = false)
     private String lastName;
+
     @NotEmpty
     @Email(message = "{errors.invalid_email}")
     @Column(name = "EMAIL", nullable = false)
     private String email;
+
     @NotEmpty
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "APP_USER_USER_PROFILE",
-            joinColumns = {@JoinColumn(name = "USER_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "USER_PROFILE_ID")})
-    private Set<UserProfile> userProfiles = new HashSet<UserProfile>();
+    @JoinTable(name = "user_profile",
+            joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName="ID")},
+            inverseJoinColumns = {@JoinColumn(name = "PROFILE_ID", referencedColumnName="ID")})
+
+    private Set<UserProfile> profiles;
 
     public String getPasswordResetToken() {
         return passwordResetToken;
@@ -101,12 +105,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Set<UserProfile> getUserProfiles() {
-        return userProfiles;
+    public Set<UserProfile> getProfiles() {
+        return profiles;
     }
 
-    public void setUserProfiles(Set<UserProfile> userProfiles) {
-        this.userProfiles = userProfiles;
+    public void setProfiles(Set<UserProfile> userProfiles) {
+        this.profiles = userProfiles;
     }
 
     @Override
