@@ -33,7 +33,7 @@ public class DBTest {
     @Test
     @Ignore
     public void testSendEmail() {
-        emailService.sendEmail("admin@gmail.com", "JCart - Test Mail", "This is a test email from JCart");
+        emailService.sendEmail("admin@gmail.com", "Test Mail", "This is a test email.");
     }
 
 }

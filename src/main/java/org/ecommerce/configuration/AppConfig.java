@@ -24,10 +24,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 
     @Autowired
-    RoleToUserProfileConverter roleToUserProfileConverter;
-
-    @Autowired
-    private MessageSource messageSource;
+    private RoleToUserProfileConverter roleToUserProfileConverter;
 
     /**
      * Configure ViewResolvers to deliver preferred views.
@@ -37,8 +34,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setViewClass(JstlView.class);
-        viewResolver.setPrefix("/WEB-INF/views/");
-        viewResolver.setSuffix(".jsp");
+        viewResolver.setPrefix("/WEB-INF/templates/");
+        viewResolver.setSuffix(".html");
         registry.viewResolver(viewResolver);
     }
 
@@ -69,13 +66,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     }
 
 
-    @Override
-    public Validator getValidator() {
-        LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
-        factory.setValidationMessageSource(messageSource);
-        return factory;
-    }
-
     /**
      * Configure ResourceHandlers to serve static resources like CSS/ Javascript etc...
      */
@@ -103,7 +93,6 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         messageSource.setBasename("messages");
         return messageSource;
     }
-
 
     @Bean
     public JavaMailSenderImpl mailSender() {

@@ -44,10 +44,17 @@ public class AppController {
     AuthenticationTrustResolver authenticationTrustResolver;
 
 
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String indexPage() {
+        return "index";
+    }
+
     /**
      * This method will list all existing users.
      */
-    @RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    //@RequestMapping(value = {"/", "/list"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/list"}, method = RequestMethod.GET)
     public String listUsers(ModelMap model) {
 
         List<User> users = userService.findAllUsers();
@@ -127,13 +134,6 @@ public class AppController {
             return "registration";
         }
 
-        /*//Uncomment below 'if block' if you WANT TO ALLOW UPDATING SSO_ID in UI which is a unique key to a User.
-        if(!userService.isUserSSOUnique(user.getId(), user.getSsoId())){
-            FieldError ssoError =new FieldError("user","ssoId",messageSource.getMessage("non.unique.ssoId", new String[]{user.getSsoId()}, Locale.getDefault()));
-            result.addError(ssoError);
-            return "registration";
-        }*/
-
 
         userService.updateUser(user);
 
@@ -182,6 +182,7 @@ public class AppController {
             return "redirect:/list";
         }
     }
+
 
     /**
      * This method handles logout requests.
