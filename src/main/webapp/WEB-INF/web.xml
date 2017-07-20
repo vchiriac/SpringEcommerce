@@ -19,6 +19,7 @@
         <load-on-startup>1</load-on-startup>
     </servlet>-->
 
+<!--
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -26,6 +27,7 @@
             /WEB-INF/spring-service.xml
         </param-value>
     </context-param>
+-->
 
 
     <!-- UTF-8 encoding -->

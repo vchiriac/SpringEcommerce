@@ -9,9 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 
 @Configuration
@@ -23,6 +26,8 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Autowired
     RoleToUserProfileConverter roleToUserProfileConverter;
 
+    @Autowired
+    private MessageSource messageSource;
 
     /**
      * Configure ViewResolvers to deliver preferred views.
@@ -35,6 +40,40 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         viewResolver.setPrefix("/WEB-INF/views/");
         viewResolver.setSuffix(".jsp");
         registry.viewResolver(viewResolver);
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        super.addViewControllers(registry);
+        registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/register").setViewName("register");
+        registry.addRedirectViewController("/", "/home");
+
+    }
+
+    @Bean
+    public ClassLoaderTemplateResolver emailTemplateResolver() {
+        ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
+        emailTemplateResolver.setPrefix("email-templates/");
+        emailTemplateResolver.setSuffix(".html");
+        emailTemplateResolver.setTemplateMode("HTML5");
+        emailTemplateResolver.setCharacterEncoding("UTF-8");
+        emailTemplateResolver.setOrder(2);
+
+        return emailTemplateResolver;
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        super.addInterceptors(registry);
+    }
+
+
+    @Override
+    public Validator getValidator() {
+        LocalValidatorFactoryBean factory = new LocalValidatorFactoryBean();
+        factory.setValidationMessageSource(messageSource);
+        return factory;
     }
 
     /**
@@ -76,6 +115,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
         return javaMailSender;
     }
+
     /**
      * Optional. It's only required when handling '.' in @PathVariables which otherwise ignore everything after last '.' in @PathVaidables argument.
      * It's a known bug in Spring [https://jira.spring.io/browse/SPR-6164], still present in Spring 4.1.7.
@@ -91,25 +131,3 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 }
-
-
-/*
-@Configuration
-@EnableWebMvc
-public class AppConfig extends WebMvcConfigurerAdapter {
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
-        internalResourceViewResolver.setPrefix("/");
-        internalResourceViewResolver.setSuffix(".jsp");
-        return internalResourceViewResolver;
-    }
-
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
-
-
-}
-*/

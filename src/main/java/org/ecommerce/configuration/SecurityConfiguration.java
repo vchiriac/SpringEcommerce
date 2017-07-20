@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/", "/list")
                 .access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_DBA')")
                 .antMatchers("/newuser/**", "/delete-user-*").access("hasRole('ROLE_ADMIN')").antMatchers("/edit-user-*")
-                .access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DBA') or hasRole('ROLE_ANONYMOUS')").and().formLogin().loginPage("/login")
+                .access("hasRole('ROLE_ADMIN') or hasRole('ROLE_DBA') or hasRole('ROLE_ANONYMOUS')MenuConfiguration").and().formLogin().loginPage("/login")
                 .loginProcessingUrl("/login").usernameParameter("ssoId").passwordParameter("password").and()
                 .rememberMe().rememberMeParameter("remember-me").tokenRepository(tokenRepository)
                 .tokenValiditySeconds(1209600)
